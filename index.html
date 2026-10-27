@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#635bff" />
+  <title>StudyFlow — Student Smart Planner</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="StudyFlow home">
+        <span class="brand-mark">S</span><span>StudyFlow</span>
+      </a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="nav-links" aria-label="Main navigation">
+        <button class="nav-link active" data-view="overview"><span>▦</span> Overview</button>
+        <button class="nav-link" data-view="tasks"><span>✓</span> My Tasks <span class="nav-count" id="navTaskCount">0</span></button>
+        <button class="nav-link" data-view="exams"><span>▣</span> Exam Planner</button>
+        <button class="nav-link" data-view="progress"><span>◔</span> Progress</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="tip-card">
+          <div class="tip-icon">✦</div>
+          <strong>Small steps, big wins.</strong>
+          <p>Keep showing up. Your future self will thank you.</p>
+        </div>
+        <div class="profile">
+          <div class="avatar">S</div>
+          <div><strong>Student</strong><small>My workspace</small></div>
+          <span class="profile-dots">•••</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Toggle navigation">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="breadcrumbCurrent">Overview</strong></div>
+        <div class="topbar-right">
+          <div class="date-chip"><span>◷</span><span id="todayDate">Today</span></div>
+          <button class="icon-button" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">◐</button>
+        </div>
+      </header>
+
+      <section class="page-view active" id="view-overview">
+        <div class="page-heading">
+          <div><p class="eyebrow" id="greeting">YOUR STUDY SPACE</p><h1>Let’s make today count<span class="heading-dot">.</span></h1><p class="subheading">A little progress each day adds up to big results.</p></div>
+          <button class="primary-button" id="quickAddTask">＋ Add a task</button>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Tasks completed</span><span class="stat-icon purple">✓</span></div><div class="stat-value" id="statCompleted">0 <small>/ 0</small></div><div class="stat-foot"><span class="mini-track"><span id="completedBar"></span></span><span id="completedPercent">0%</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Pending tasks</span><span class="stat-icon orange">◷</span></div><div class="stat-value" id="statPending">0</div><div class="stat-caption">Tasks waiting for you</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Upcoming exams</span><span class="stat-icon blue">▣</span></div><div class="stat-value" id="statExams">0</div><div class="stat-caption">On your exam calendar</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Study streak</span><span class="stat-icon green">✦</span></div><div class="stat-value"><span id="statStreak">0</span> <small>days</small></div><div class="stat-caption">Build your daily rhythm</div></article>
+        </div>
+        <div class="content-grid">
+          <section class="panel tasks-panel">
+            <div class="panel-heading"><div><h2>Today’s focus</h2><p>Your priorities, all in one place</p></div><button class="text-button" data-go="tasks">View all <span>→</span></button></div>
+            <div class="task-list" id="todayTaskList"></div>
+            <div class="empty-state hidden" id="todayEmpty"><div class="empty-illustration">✓</div><strong>You’re all caught up!</strong><p>Add a task to start planning your day.</p><button class="secondary-button" id="emptyAddTask">＋ Add your first task</button></div>
+          </section>
+          <section class="panel exam-panel">
+            <div class="panel-heading"><div><h2>Upcoming exams</h2><p>Stay one step ahead</p></div><button class="text-button" data-go="exams">See all <span>→</span></button></div>
+            <div id="upcomingExamList" class="exam-list"></div>
+            <div class="empty-state compact hidden" id="examEmpty"><div class="empty-illustration">▣</div><strong>No exams scheduled</strong><p>Add your next exam to see it here.</p></div>
+          </section>
+        </div>
+        <section class="panel weekly-panel">
+          <div class="panel-heading"><div><h2>Your weekly progress</h2><p>Tasks completed over the last seven days</p></div><div class="chart-legend"><span></span> Completed tasks</div></div>
+          <div class="weekly-chart" id="weeklyChart" aria-label="Weekly task completion chart"></div>
+        </section>
+      </section>
+
+      <section class="page-view" id="view-tasks">
+        <div class="page-heading"><div><p class="eyebrow">STAY ON TRACK</p><h1>My tasks<span class="heading-dot">.</span></h1><p class="subheading">Break your goals into manageable steps.</p></div><button class="primary-button" id="addTaskButton">＋ Add a task</button></div>
+        <section class="panel">
+          <div class="toolbar"><div class="filter-tabs" id="taskFilters"><button class="filter-tab active" data-filter="all">All tasks</button><button class="filter-tab" data-filter="active">In progress</button><button class="filter-tab" data-filter="completed">Completed</button></div><div class="search-wrap"><span>⌕</span><input id="taskSearch" type="search" placeholder="Search tasks…" aria-label="Search tasks" /></div></div>
+          <div class="task-list full-task-list" id="allTaskList"></div>
+          <div class="empty-state hidden" id="allTaskEmpty"><div class="empty-illustration">✓</div><strong>No tasks found</strong><p>Try a different search or add a new task.</p></div>
+        </section>
+      </section>
+
+      <section class="page-view" id="view-exams">
+        <div class="page-heading"><div><p class="eyebrow">PREPARE WITH CONFIDENCE</p><h1>Exam planner<span class="heading-dot">.</span></h1><p class="subheading">Know what’s coming and make a plan to prepare.</p></div><button class="primary-button" id="addExamButton">＋ Add an exam</button></div>
+        <div class="exam-summary-grid"><div class="exam-summary"><span class="summary-icon blue">▣</span><div><small>Total scheduled</small><strong id="examTotal">0</strong></div></div><div class="exam-summary"><span class="summary-icon purple">◷</span><div><small>Coming up in 7 days</small><strong id="examSoon">0</strong></div></div><div class="exam-summary"><span class="summary-icon green">✓</span><div><small>Days to next exam</small><strong id="nextExamDays">—</strong></div></div></div>
+        <section class="panel"><div class="panel-heading"><div><h2>Your exam schedule</h2><p>All your upcoming assessments</p></div></div><div class="exam-grid" id="allExamList"></div><div class="empty-state hidden" id="allExamEmpty"><div class="empty-illustration">▣</div><strong>Your exam calendar is clear</strong><p>Add an exam to keep your preparation organized.</p></div></section>
+      </section>
+
+      <section class="page-view" id="view-progress">
+        <div class="page-heading"><div><p class="eyebrow">LOOK HOW FAR YOU’VE COME</p><h1>Your progress<span class="heading-dot">.</span></h1><p class="subheading">Celebrate consistency, not just the finish line.</p></div></div>
+        <div class="progress-overview">
+          <section class="panel progress-main"><div class="panel-heading"><div><h2>Task completion</h2><p>Your overall progress so far</p></div><span class="stat-icon purple">↗</span></div><div class="big-progress"><div class="progress-ring" id="progressRing"><div><strong id="progressRingValue">0%</strong><small>completed</small></div></div><div class="progress-details"><div><span class="legend-dot purple-dot"></span><span>Completed tasks</span><strong id="progressCompleted">0</strong></div><div><span class="legend-dot orange-dot"></span><span>Pending tasks</span><strong id="progressPending">0</strong></div><div><span class="legend-dot blue-dot"></span><span>Exams scheduled</span><strong id="progressExamCount">0</strong></div></div></div></section>
+          <section class="panel"><div class="panel-heading"><div><h2>Study snapshot</h2><p>Your planning at a glance</p></div></div><div class="snapshot-list"><div><span class="snapshot-icon purple">✓</span><div><strong id="snapshotDone">0 tasks</strong><small>Completed so far</small></div></div><div><span class="snapshot-icon blue">▣</span><div><strong id="snapshotExams">0 exams</strong><small>On your schedule</small></div></div><div><span class="snapshot-icon green">✦</span><div><strong id="snapshotStreak">0 days</strong><small>Current study streak</small></div></div></div></section>
+        </div>
+        <section class="panel weekly-panel"><div class="panel-heading"><div><h2>Weekly activity</h2><p>Keep building your momentum</p></div></div><div class="weekly-chart" id="progressChart"></div></section>
+        <section class="data-actions"><div><strong>Your data stays in this browser</strong><p>Tasks and exams are saved locally on this device.</p></div><button class="secondary-button" id="exportData">↓ Export my data</button><button class="danger-button" id="clearData">Clear all data</button></section>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="taskModalBackdrop">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle">
+      <div class="modal-heading"><div><p class="eyebrow">PLAN YOUR WORK</p><h2 id="taskModalTitle">Add a task</h2></div><button class="modal-close" data-close="task" aria-label="Close">×</button></div>
+      <form id="taskForm">
+        <input type="hidden" id="taskId" />
+        <label for="taskTitle">Task name <span>*</span></label><input id="taskTitle" name="title" required maxlength="100" placeholder="e.g. Revise chapter 4" />
+        <div class="form-row"><div><label for="taskSubject">Subject</label><input id="taskSubject" name="subject" maxlength="60" placeholder="e.g. Mathematics" /></div><div><label for="taskDue">Due date</label><input id="taskDue" name="due" type="date" /></div></div>
+        <div class="form-row"><div><label for="taskPriority">Priority</label><select id="taskPriority" name="priority"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select></div><div><label for="taskCategory">Type</label><select id="taskCategory" name="category"><option value="Study">Study</option><option value="Assignment">Assignment</option><option value="Revision">Revision</option><option value="Personal">Personal</option></select></div></div>
+        <label for="taskNotes">Notes <small>(optional)</small></label><textarea id="taskNotes" name="notes" rows="3" maxlength="300" placeholder="Add any helpful details…"></textarea>
+        <div class="modal-actions"><button type="button" class="secondary-button" data-close="task">Cancel</button><button type="submit" class="primary-button">Save task</button></div>
+      </form>
+    </section>
+  </div>
+
+  <div class="modal-backdrop hidden" id="examModalBackdrop">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="examModalTitle">
+      <div class="modal-heading"><div><p class="eyebrow">BE EXAM-READY</p><h2 id="examModalTitle">Add an exam</h2></div><button class="modal-close" data-close="exam" aria-label="Close">×</button></div>
+      <form id="examForm">
+        <input type="hidden" id="examId" />
+        <label for="examTitle">Exam or subject <span>*</span></label><input id="examTitle" name="title" required maxlength="100" placeholder="e.g. Physics midterm" />
+        <div class="form-row"><div><label for="examDate">Exam date <span>*</span></label><input id="examDate" name="date" type="date" required /></div><div><label for="examTime">Time</label><input id="examTime" name="time" type="time" /></div></div>
+        <label for="examLocation">Room or location <small>(optional)</small></label><input id="examLocation" name="location" maxlength="100" placeholder="e.g. Room 204" />
+        <label for="examNotes">Preparation notes <small>(optional)</small></label><textarea id="examNotes" name="notes" rows="3" maxlength="300" placeholder="Topics to review, materials to bring…"></textarea>
+        <div class="modal-actions"><button type="button" class="secondary-button" data-close="exam">Cancel</button><button type="submit" class="primary-button">Save exam</button></div>
+      </form>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
